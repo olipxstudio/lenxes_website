@@ -6,10 +6,16 @@ const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
+  //   register user function
+  const registerUser = async (user) => {
+    alert(`${user?.name} is registered`);
+  };
+
   return (
     <AppContext.Provider
       value={{
         loading,
+        registerUser,
       }}
     >
       {children}
