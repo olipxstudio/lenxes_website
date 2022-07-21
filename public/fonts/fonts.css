@@ -1,0 +1,23 @@
+/* luxurious-script-regular - latin */
+@font-face {
+    font-family: 'Luxurious Script';
+    font-style: normal;
+    font-weight: 400;
+    src: url('luxurious-script-v5-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('luxurious-script-v5-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('luxurious-script-v5-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('luxurious-script-v5-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('luxurious-script-v5-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('luxurious-script-v5-latin-regular.svg#LuxuriousScript') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'Millik';
+    font-style: normal;
+    font-weight: 700;
+    src: url('Millik.otf');
+    src: local(''),
+         url('Millik.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('Millik.otf') format('opentype');
+}
