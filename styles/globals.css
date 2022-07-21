@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "../public/fonts/fonts.css";
+
+/* @layer base {
+    html{
+        background: #F4F6F8;
+    }
+} */
+
 html,
 body {
   padding: 0;
