@@ -1,14 +1,51 @@
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @import "../public/fonts/fonts.css";
 
-/* @layer base {
-    html{
-        background: #F4F6F8;
-    }
-} */
+@layer components {}
+
+@layer base {
+  [type='text'],
+  [type='email'],
+  [type='url'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='week'],
+  [multiple],
+  textarea,
+  select {
+    @apply rounded w-full border-slate-500 shadow-sm bg-white;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow mb-4;
+  }
+
+  .text-sub {
+    @apply text-slate-600;
+  }
+  .btn {
+    @apply border cursor-pointer py-4 px-5 leading-[1] text-center flex justify-center items-center rounded-full transition-all;
+  }
+  .btn-outline {
+    @apply border-slate-400 hover:bg-slate-100;
+  }
+  .btn-primary{
+    @apply bg-[#D17A6A] hover:bg-[#c26f60] text-white border-[#c26f60];
+  }
+  .text-primary{
+    @apply text-[#D17A6A];
+  }
+}
 
 html,
 body {
@@ -25,4 +62,7 @@ a {
 
 * {
   box-sizing: border-box;
+}
+.btn {
+  box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
 }
