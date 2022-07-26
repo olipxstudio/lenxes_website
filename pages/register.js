@@ -151,7 +151,7 @@ const register = () => {
             </h1>
           </div>
           <div className="px-7">
-            <div className="flex justify-end mb-b">
+            <div className="flex justify-end mb-5">
               <p className="font-bold">Step 1 of 2</p>
             </div>
             <Formik

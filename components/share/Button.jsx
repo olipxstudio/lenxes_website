@@ -8,17 +8,14 @@ const Button = ({ type, loading, props, children, variant }) => {
     if (variant === "secondary") return "btn-secondary";
     if (!variant) return "btn-neutral";
   };
-  const loader = () => {
-    return (
-      <span className="flex items-center space-x-4">
-        <Spinner />
-        Loading...
-      </span>
-    );
-  };
   return (
-    <button type={type} className={`btn ${useVariant()}`} {...props}>
-      {loading ? loader() : children}
+    <button
+      type={type}
+      disabled={loading}
+      className={`btn ${useVariant()} disabled:bg-current-color disabled:text-current-color disabled:opacity-75`}
+      {...props}
+    >
+      {loading ? <Spinner /> : children}
     </button>
   );
 };
