@@ -4,44 +4,53 @@ import { useAppContext } from "../context/AppContext";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import TextField from "../components/share/TextField";
-import { IoAlertCircleSharp, IoCheckmarkCircle } from "react-icons/io5";
-import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
-import { BsFacebook } from "react-icons/bs";
 import Link from "next/link";
-
+import { Country, State, City } from "country-state-city";
 
 const register = () => {
   const { registerUser } = useAppContext();
   const [loading, setLoading] = useState(false);
+  const [country, setCountry] = useState([]);
+  const [state, setState] = useState([]);
+  const [city, setCity] = useState([]);
 
   // input fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [username, setUsername] = useState("");
+  const [address, setAddress] = useState({
+    country: {
+      name: "",
+      code: "",
+    },
+    state: {
+      name: "",
+      code: "",
+    },
+    city: {
+      name: "",
+      code: "",
+    },
+  });
 
   // input touched states
   const [emailTouched, setEmailTouched] = useState(false);
   const [phoneTouched, setPhoneTouched] = useState(false);
-  const [usernameTouched, setUsernameTouched] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
   // fields valid states
   const [emailValid, setEmailValid] = useState(undefined);
   const [phoneValid, setPhoneValid] = useState(undefined);
-  const [usernameValid, setUsernameValid] = useState(undefined);
 
   // input loading states
   const [emailLoading, setEmailLoading] = useState(false);
   const [phoneLoading, setPhoneLoading] = useState(false);
-  const [usernameLoading, setUsernameLoading] = useState(false);
 
   // input error states
   const [emailError, setEmailError] = useState(null);
   const [phoneError, setPhoneError] = useState(null);
-  const [usernameError, setUsernameError] = useState(null);
 
   // run api for email
   async function validateEmail() {
@@ -76,6 +85,21 @@ const register = () => {
     return;
   }, [emailTouched]);
 
+  useEffect(() => {
+    const countries = Country.getAllCountries();
+    const states = State.getAllStates();
+    const cities = City.getAllCities();
+    setCountry(countries);
+    setState(states);
+    setCity(cities);
+
+    return () => {
+      setCountry([]);
+      setState([]);
+      setCity([]);
+    };
+  }, []);
+
   const validate = Yup.object({
     new_email: Yup.string()
       .email("Email is invalid")
@@ -91,17 +115,28 @@ const register = () => {
     category: Yup.string().required("This feild is required"),
     country: Yup.string().required("This feild is required"),
     state: Yup.string().required("This feild is required"),
+    city: Yup.string().required("This feild is required"),
     // username: Yup.string().required("Unsername is required"),
     // password: Yup.string()
     //   .min(4, "Must be at least 4 characters")
     //   .required("Password is required"),
   });
 
+  const _handleChangeAddress = (e, location) => {
+    setAddress({
+      ...address,
+      [location]: {
+        code: e.target[e.target.selectedIndex].getAttribute("data-code"),
+        name: e.target.value,
+      },
+    });
+  };
+
   return (
     <div className="bg-slate-100 grid place-content-center items-center py-[4rem] relative">
       <div className="w-[450px] max-w-full ">
         <div className="card">
-          <div className="p-4 flex flex-col items-center mb-7">
+          <div className="p-4 flex flex-col items-center mb-5">
             <div className="relative w-[120px] h-[45px]">
               <Image
                 src="/lenxes_logo.svg"
@@ -116,6 +151,9 @@ const register = () => {
             </h1>
           </div>
           <div className="px-7">
+            <div className="flex justify-end mb-b">
+              <p className="font-bold">Step 1 of 2</p>
+            </div>
             <Formik
               enableReinitialize
               initialValues={{
@@ -123,14 +161,22 @@ const register = () => {
                 new_email: email,
                 phone: phone,
                 category: "",
-                country: "",
-                state: "",
-                // username: username,
-                // password: "",
-                // referral: referralCode,
+                country: address?.country?.name,
+                state: address?.state?.name,
+                city: address?.city?.name,
               }}
               validationSchema={validate}
               onSubmit={async (values) => {
+                const obj = {
+                  full_name: values.full_name,
+                  email: values.new_email,
+                  phone: values.phone,
+                  category: values.category,
+                  country: values.country,
+                  state: values.state,
+                  city: values.city,
+                };
+                console.log(obj);
                 // if (!emailValid) {
                 //   if (emailLoading) {
                 //     return;
@@ -150,7 +196,10 @@ const register = () => {
                 setLoading(true);
                 setTimeout(async () => {
                   setLoading(false);
-                  await registerUser({ name: values.full_name, phone: values.phone });
+                  await registerUser({
+                    name: values.full_name,
+                    phone: values.phone,
+                  });
                 }, 2000);
               }}
             >
@@ -222,15 +271,70 @@ const register = () => {
                   </TextField>
 
                   <div className="grid grid-cols-2 gap-x-4">
-                    <TextField name="country" label="Country" as="select">
+                    <TextField
+                      name="country"
+                      label="Country"
+                      as="select"
+                      value={address?.country?.name}
+                      onChange={(e) => _handleChangeAddress(e, "country")}
+                    >
                       <option value="">Select</option>
-                      <option value="1">Nigeria</option>
+                      {country.map((country) => (
+                        <option
+                          key={country?.isoCode}
+                          data-code={country.isoCode}
+                          value={country.name}
+                        >
+                          {country.name}
+                        </option>
+                      ))}
                     </TextField>
-                    <TextField name="state" label="State" as="select">
+                    <TextField
+                      name="state"
+                      label="State"
+                      as="select"
+                      value={address?.state?.name}
+                      onChange={(e) => _handleChangeAddress(e, "state")}
+                    >
                       <option value="">Select</option>
-                      <option value="1">Lagos</option>
+                      {state
+                        .filter(
+                          (state) =>
+                            state.countryCode === address?.country?.code
+                        )
+                        .map((state, index) => (
+                          <option
+                            key={index}
+                            data-code={state.isoCode}
+                            value={state.name}
+                          >
+                            {state.name}
+                          </option>
+                        ))}
                     </TextField>
                   </div>
+                  <TextField
+                    name="city"
+                    label="City"
+                    as="select"
+                    value={address?.city?.name}
+                    onChange={(e) =>
+                      setAddress({ ...address, city: { name: e.target.value } })
+                    }
+                  >
+                    <option value="">Select</option>
+                    {city
+                      .filter(
+                        (city) =>
+                          city.stateCode === address?.state?.code &&
+                          city.countryCode === address?.country?.code
+                      )
+                      .map((city, index) => (
+                        <option key={index} value={city.name}>
+                          {city.name}
+                        </option>
+                      ))}
+                  </TextField>
 
                   <div className="relative w-full pb-4 grid">
                     <Button variant="primary" loading={loading} type="submit">

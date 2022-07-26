@@ -11,6 +11,7 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.5.2",
     "axios": "^0.27.2",
+    "country-state-city": "^3.0.1",
     "flowbite": "^1.5.1",
     "formik": "^2.2.9",
     "next": "12.2.2",

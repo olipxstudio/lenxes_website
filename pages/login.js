@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../components/share/Button";
 import { useAppContext } from "../context/AppContext";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import TextField from "../components/share/TextField";
-import { IoAlertCircleSharp, IoCheckmarkCircle } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { BsFacebook } from "react-icons/bs";
